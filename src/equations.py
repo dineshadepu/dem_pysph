@@ -37,9 +37,13 @@ def get_particle_array_dem(constants=None, **props):
     #     'tag', 'p'
     # ])
     pa.set_output_arrays([
-        'x', 'y', 'z', 'u', 'v', 'w', 'm', 'pid', 'gid',
-        'tag', 'p'
+        'x', 'y', 'z', 'u', 'v', 'w', 'm', 'p', 'pid',
+        'tag', 'gid', 'fx', 'fy', 'fz'
     ])
+    # pa.set_output_arrays([
+    #     'x', 'y', 'z', 'u', 'v', 'w', 'm', 'pid', 'gid',
+    #     'tag', 'p'
+    # ])
 
     return pa
 
@@ -55,3 +59,19 @@ class BodyForce(Equation):
         d_fx[d_idx] = d_m[d_idx] * self.gx
         d_fy[d_idx] = d_m[d_idx] * self.gy
         d_fz[d_idx] = d_m[d_idx] * self.gz
+
+
+class LinearSpringForceParticleParticle(Equation):
+    """Documentation for LinearSpringForce
+
+    """
+    def __init__(self, dest, sources):
+        super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
+
+    def loop(self, d_idx, d_m, s_idx, d_fx, d_fy, d_fz, VIJ, XIJ, R2IJ,
+             d_R, s_R):
+        overlap = d_R[d_idx] + s_R[s_idx] - R2IJ
+        if overlap > 0:
+            d_fx[d_idx] += 1e4 * overlap * XIJ[0] / R2IJ
+            d_fy[d_idx] += 1e4 * overlap * XIJ[1] / R2IJ
+            d_fz[d_idx] += 1e4 * overlap * XIJ[2] / R2IJ
