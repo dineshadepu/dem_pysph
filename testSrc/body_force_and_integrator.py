@@ -1,24 +1,24 @@
 """100 spheres falling under gravity
 
-Check basic equations working. Body force and integrator
+check basic equations working. body force and integrator
 """
 from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 
-# PySPH base and carray imports
+# pysph base and carray imports
 from pysph.base.utils import get_particle_array_dem
-from pysph.base.kernels import CubicSpline
+from pysph.base.kernels import cubicspline
 
-from pysph.solver.solver import Solver
-from pysph.sph.integrator import EPECIntegrator
-from pysph.sph.integrator_step import DEMStep
+from pysph.solver.solver import solver
+from pysph.sph.integrator import epecintegrator
+from pysph.sph.integrator_step import demstep
 
-from pysph.sph.equation import Group
+from pysph.sph.equation import group
 from pysph.sph.rigid_body import (
-    BodyForce
+    bodyforce
      )
-from pysph.solver.application import Application
+from pysph.solver.application import application
 
 
 def add_properties(pa, *props):
@@ -26,7 +26,7 @@ def add_properties(pa, *props):
         pa.add_property(name=prop)
 
 
-class FluidStructureInteration(Application):
+class fluidstructureinteration(application):
     def initialize(self):
         self.dx = 1
 
@@ -43,23 +43,23 @@ class FluidStructureInteration(Application):
         return [sand]
 
     def create_solver(self):
-        kernel = CubicSpline(dim=2)
+        kernel = cubicspline(dim=2)
 
-        integrator = EPECIntegrator(sand=DEMStep())
-        # integrator = EPECIntegrator(fluid=WCSPHStep())
+        integrator = epecintegrator(sand=demstep())
+        # integrator = epecintegrator(fluid=wcsphstep())
 
         dt = 1e-3
-        print("DT: %s" % dt)
+        print("dt: %s" % dt)
         tf = 2
-        solver = Solver(kernel=kernel, dim=2, integrator=integrator, dt=dt,
-                        tf=tf, adaptive_timestep=False)
+        solver = solver(kernel=kernel, dim=2, integrator=integrator, dt=dt,
+                        tf=tf, adaptive_timestep=false)
 
         return solver
 
     def create_equations(self):
         equations = [
-            Group(equations=[
-                BodyForce(dest='sand', sources=None, gy=-9.81),
+            group(equations=[
+                bodyforce(dest='sand', sources=None, gy=-9.81),
             ]),
         ]
         return equations
@@ -69,7 +69,7 @@ class FluidStructureInteration(Application):
 
 
 if __name__ == '__main__':
-    app = FluidStructureInteration()
+    app = fluidstructureinteration()
     app.run()
     # x, y = create_fluid()
     # xc, yc, indices = create_cube()
@@ -88,4 +88,4 @@ if __name__ == '__main__':
     # plt.axes().set_aspect('equal', 'datalim')
     # plt.show()
 
-#  LocalWords:  SummationDensityShepardFilter
+#  localwords:  summationdensityshepardfilter
