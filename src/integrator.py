@@ -22,7 +22,7 @@ class DEMStep(IntegratorStep):
     """
 
     def initialize(self, d_idx, d_x0, d_y0, d_z0, d_x, d_y, d_z, d_u0, d_v0,
-                   d_w0, d_u, d_v, d_w, d_rho0, d_rho):
+                   d_w0, d_u, d_v, d_w):
         d_x0[d_idx] = d_x[d_idx]
         d_y0[d_idx] = d_y[d_idx]
         d_z0[d_idx] = d_z[d_idx]
