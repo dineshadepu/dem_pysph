@@ -25,7 +25,8 @@ def get_particle_array_dem(constants=None, **props):
 
     """
 
-    dem_props = ['x0 ', 'y0', 'z0', 'u0', 'v0', 'w0', 'fx', 'fy', 'fz', 'R']
+    dem_props = ['x0 ', 'y0', 'z0', 'u0', 'v0', 'w0', 'fx', 'fy', 'fz', 'R',
+                 'm_inverse']
 
     pa = get_particle_array(constants=constants, additional_props=dem_props,
                             **props)
