@@ -31,7 +31,7 @@ class FluidStructureInteration(Application):
         self.dx = 1
 
     def create_particles(self):
-        x = np.asarray([-2, 2])
+        x = np.asarray([-1.02, 1.02])
         y = np.asarray([3, 3])
         u = np.asarray([1, -1])
         m_inverse = np.ones_like(x) * 1
@@ -49,7 +49,8 @@ class FluidStructureInteration(Application):
         h = np.ones_like(x) * 3
         wall = get_particle_array_dem(x=x, y=y, m=m, m_inverse=m_inverse, R=R,
                                       h=h, name="wall")
-        return [sand, wall]
+        # return [sand, wall]
+        return [sand]
 
     def create_solver(self):
         kernel = CubicSpline(dim=2)
@@ -58,7 +59,7 @@ class FluidStructureInteration(Application):
 
         dt = 1e-4
         print("DT: %s" % dt)
-        tf = 2
+        tf = 0.1
         solver = Solver(kernel=kernel, dim=2, integrator=integrator, dt=dt,
                         tf=tf, adaptive_timestep=False)
 
@@ -68,8 +69,9 @@ class FluidStructureInteration(Application):
         equations = [
             Group(equations=[
                 # BodyForce(dest='sand', sources=None, gy=-9.81),
-                LinearSpringForceParticleParticle(dest='sand',
-                                                  sources=['wall', 'sand']),
+                LinearSpringForceParticleParticle(
+                    dest='sand', sources=['sand'], k=1e4,
+                    ln_e=abs(np.log(0.8)), m_eff=0.5),
                 MakeForcesZero(dest='sand', sources=None)
             ]),
         ]
