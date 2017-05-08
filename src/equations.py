@@ -79,3 +79,16 @@ class LinearSpringForceParticleParticle(Equation):
             d_fx[d_idx] += 1e4 * overlap * XIJ[0] / R2IJ
             d_fy[d_idx] += 1e4 * overlap * XIJ[1] / R2IJ
             d_fz[d_idx] += 1e4 * overlap * XIJ[2] / R2IJ
+
+
+class MakeForcesZero(Equation):
+    """Documentation for LinearSpringForce
+
+    """
+    def __init__(self, dest, sources):
+        super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
+
+    def loop(self, d_idx, d_fx, d_fy, d_fz):
+        d_fx[d_idx] = 0
+        d_fy[d_idx] = 0
+        d_fz[d_idx] = 0
