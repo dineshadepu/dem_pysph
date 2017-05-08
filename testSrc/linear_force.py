@@ -16,7 +16,8 @@ from pysph.sph.integrator_step import DEMStep
 
 from pysph.sph.equation import Group
 from pysph.sph.rigid_body import (BodyForce)
-from pysph.sph.molecular_dynamics import LinearSpringForceParticleParticle
+from pysph.sph.molecular_dynamics import (LinearSpringForceParticleParticle,
+                                          MakeForcesZero)
 from pysph.solver.application import Application
 
 
@@ -68,7 +69,8 @@ class FluidStructureInteration(Application):
             Group(equations=[
                 # BodyForce(dest='sand', sources=None, gy=-9.81),
                 LinearSpringForceParticleParticle(dest='sand',
-                                                  sources=['wall', 'sand'])
+                                                  sources=['wall', 'sand']),
+                MakeForcesZero(dest='sand', sources=None)
             ]),
         ]
         return equations
