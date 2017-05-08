@@ -1,5 +1,6 @@
 from pysph.base.utils import get_particle_array
 from pysph.sph.equation import Equation
+import numpy as np
 
 
 def get_particle_array_dem(constants=None, **props):
@@ -65,9 +66,15 @@ class LinearSpringForceParticleParticle(Equation):
     """Documentation for LinearSpringForce
 
     """
-    def __init__(self, dest, sources, k=1e4):
+    def __init__(self, dest, sources, k=1e4, ln_e=1.0, m_eff=0.5):
         super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
         self.k = 1e4
+        self.m_eff = m_eff
+
+        self.ln_e = ln_e
+        self.ln_e2 = ln_e * ln_e
+        _tmp = np.sqrt(self.ln_e2 + np.pi * np.pi)
+        self.eta = 2 * np.sqrt(self.m_eff * self.k) * self.ln_e / _tmp
 
     def loop(self, d_idx, d_m, s_idx, d_fx, d_fy, d_fz, VIJ, XIJ, RIJ,
              d_R, s_R):
