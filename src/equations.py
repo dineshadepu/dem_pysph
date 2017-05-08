@@ -65,8 +65,9 @@ class LinearSpringForceParticleParticle(Equation):
     """Documentation for LinearSpringForce
 
     """
-    def __init__(self, dest, sources):
+    def __init__(self, dest, sources, k=1e4):
         super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
+        self.k = 1e4
 
     def loop(self, d_idx, d_m, s_idx, d_fx, d_fy, d_fz, VIJ, XIJ, RIJ,
              d_R, s_R):
@@ -83,24 +84,29 @@ class LinearSpringForceParticleParticle(Equation):
             nz = XIJ[2] * _rij
 
             # conservative force
-            d_fx[d_idx] += 1e2 * overlap * nx
-            d_fy[d_idx] += 1e2 * overlap * ny
-            d_fz[d_idx] += 1e2 * overlap * nz
+            # d_fx[d_idx] += 1e2 * overlap * nx
+            # d_fy[d_idx] += 1e2 * overlap * ny
+            # d_fz[d_idx] += 1e2 * overlap * nz
 
             # damping force
+            # v_n = VIJ[0] * nx + VIJ[1] * ny + VIJ[2] * nz
+            # d_fx[d_idx] += -2 * v_n * nx
+            # d_fy[d_idx] += -2 * v_n * ny
+            # d_fz[d_idx] += -2 * v_n * nz
+
+            # conservative damping force at one in single equation
             v_n = VIJ[0] * nx + VIJ[1] * ny + VIJ[2] * nz
-            d_fx[d_idx] += -2 * v_n * nx
-            d_fy[d_idx] += -2 * v_n * ny
-            d_fz[d_idx] += -2 * v_n * nz
+            k_multi_overlap = self.k * overlap
+            eta_multi_normal_velocity = 2 * v_n
+            d_fx[d_idx] += (k_multi_overlap - eta_multi_normal_velocity) * nx
+            d_fy[d_idx] += (k_multi_overlap - eta_multi_normal_velocity) * ny
+            d_fz[d_idx] += (k_multi_overlap - eta_multi_normal_velocity) * nz
 
 
 class MakeForcesZero(Equation):
     """Documentation for LinearSpringForce
 
     """
-    def __init__(self, dest, sources):
-        super(MakeForcesZero, self).__init__(dest, sources)
-
     def loop(self, d_idx, d_fx, d_fy, d_fz):
         d_fx[d_idx] = 0
         d_fy[d_idx] = 0
