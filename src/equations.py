@@ -68,17 +68,30 @@ class LinearSpringForceParticleParticle(Equation):
     def __init__(self, dest, sources):
         super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
 
-    def loop(self, d_idx, d_m, s_idx, d_fx, d_fy, d_fz, VIJ, XIJ, R2IJ,
+    def loop(self, d_idx, d_m, s_idx, d_fx, d_fy, d_fz, VIJ, XIJ, RIJ,
              d_R, s_R):
         overlap = 0
 
-        if R2IJ > 0:
-            overlap = d_R[d_idx] + s_R[s_idx] - R2IJ
+        if RIJ > 0:
+            overlap = d_R[d_idx] + s_R[s_idx] - RIJ
 
         if overlap > 0:
-            d_fx[d_idx] += 1e4 * overlap * XIJ[0] / R2IJ
-            d_fy[d_idx] += 1e4 * overlap * XIJ[1] / R2IJ
-            d_fz[d_idx] += 1e4 * overlap * XIJ[2] / R2IJ
+            # basic variables: normal vector
+            _rij = 1. / RIJ
+            nx = XIJ[0] * _rij
+            ny = XIJ[1] * _rij
+            nz = XIJ[2] * _rij
+
+            # conservative force
+            d_fx[d_idx] += 1e2 * overlap * nx
+            d_fy[d_idx] += 1e2 * overlap * ny
+            d_fz[d_idx] += 1e2 * overlap * nz
+
+            # damping force
+            v_n = VIJ[0] * nx + VIJ[1] * ny + VIJ[2] * nz
+            d_fx[d_idx] += -2 * v_n * nx
+            d_fy[d_idx] += -2 * v_n * ny
+            d_fz[d_idx] += -2 * v_n * nz
 
 
 class MakeForcesZero(Equation):
