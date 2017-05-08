@@ -68,13 +68,11 @@ class LinearSpringForceParticleParticle(Equation):
     """
     def __init__(self, dest, sources, k=1e4, ln_e=1.0, m_eff=0.5):
         super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
-        self.k = 1e4
-        self.m_eff = m_eff
+        self.k = 1e5
 
-        self.ln_e = ln_e
-        self.ln_e2 = ln_e * ln_e
-        _tmp = np.sqrt(self.ln_e2 + np.pi * np.pi)
-        self.eta = 2 * np.sqrt(self.m_eff * self.k) * self.ln_e / _tmp
+        ln_e2 = ln_e * ln_e
+        _tmp = np.sqrt(ln_e2 + np.pi * np.pi)
+        self.eta = 2 * np.sqrt(m_eff * self.k) * ln_e / _tmp
 
     def loop(self, d_idx, d_m, s_idx, d_fx, d_fy, d_fz, VIJ, XIJ, RIJ,
              d_R, s_R):
@@ -104,7 +102,7 @@ class LinearSpringForceParticleParticle(Equation):
             # conservative damping force at one in single equation
             v_n = VIJ[0] * nx + VIJ[1] * ny + VIJ[2] * nz
             k_multi_overlap = self.k * overlap
-            eta_multi_normal_velocity = 2 * v_n
+            eta_multi_normal_velocity = self.eta * v_n
             d_fx[d_idx] += (k_multi_overlap - eta_multi_normal_velocity) * nx
             d_fy[d_idx] += (k_multi_overlap - eta_multi_normal_velocity) * ny
             d_fz[d_idx] += (k_multi_overlap - eta_multi_normal_velocity) * nz
