@@ -30,14 +30,15 @@ class FluidStructureInteration(Application):
         self.dx = 1
 
     def create_particles(self):
-        x = np.asarray([0])
-        y = np.asarray([3])
+        x = np.asarray([-2, 2])
+        y = np.asarray([3, 3])
+        u = np.asarray([1, -1])
         m_inverse = np.ones_like(x) * 1
         m = np.ones_like(x) * 1
         R = np.ones_like(x) * 1
         h = np.ones_like(x) * 3
         sand = get_particle_array_dem(x=x, y=y, m=m, m_inverse=m_inverse, R=R,
-                                      h=h, name="sand")
+                                      u=u, h=h, name="sand")
 
         x = np.asarray([0])
         y = np.asarray([0])
@@ -54,7 +55,7 @@ class FluidStructureInteration(Application):
 
         integrator = EPECIntegrator(sand=DEMStep())
 
-        dt = 1e-3
+        dt = 1e-4
         print("DT: %s" % dt)
         tf = 2
         solver = Solver(kernel=kernel, dim=2, integrator=integrator, dt=dt,
@@ -65,9 +66,9 @@ class FluidStructureInteration(Application):
     def create_equations(self):
         equations = [
             Group(equations=[
-                BodyForce(dest='sand', sources=None, gy=-9.81),
+                # BodyForce(dest='sand', sources=None, gy=-9.81),
                 LinearSpringForceParticleParticle(dest='sand',
-                                                  sources=['wall'])
+                                                  sources=['wall', 'sand'])
             ]),
         ]
         return equations
