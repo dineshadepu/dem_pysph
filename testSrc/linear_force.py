@@ -30,29 +30,23 @@ class FluidStructureInteration(Application):
         self.dx = 1
 
     def create_particles(self):
-        x = np.linspace(0, 1, 10)
-        y = np.linspace(2, 3, 10)
-        r = (x[1] - x[0]) / 2.
-        x, y = np.meshgrid(x, y)
-        x = x.ravel()
-        y = y.ravel()
+        x = np.asarray([0])
+        y = np.asarray([3])
         m_inverse = np.ones_like(x) * 1
         m = np.ones_like(x) * 1
-        R = np.ones_like(x) * r
-        h = np.ones_like(x) * 4 * r
+        R = np.ones_like(x) * 1
+        h = np.ones_like(x) * 3
         sand = get_particle_array_dem(x=x, y=y, m=m, m_inverse=m_inverse, R=R,
                                       h=h, name="sand")
 
-        x = np.linspace(0, 1, 10)
-        y = np.linspace(-1, 1, 1)
-        x, y = np.meshgrid(x, y)
-        x = x.ravel()
-        y = y.ravel()
+        x = np.asarray([0])
+        y = np.asarray([0])
         m_inverse = np.ones_like(x) * 1
         m = np.ones_like(x) * 1
-        R = np.ones_like(x) * r
+        R = np.ones_like(x) * 1
+        h = np.ones_like(x) * 3
         wall = get_particle_array_dem(x=x, y=y, m=m, m_inverse=m_inverse, R=R,
-                                      name="wall")
+                                      h=h, name="wall")
         return [sand, wall]
 
     def create_solver(self):
@@ -73,7 +67,7 @@ class FluidStructureInteration(Application):
             Group(equations=[
                 BodyForce(dest='sand', sources=None, gy=-9.81),
                 LinearSpringForceParticleParticle(dest='sand',
-                                                  sources=['wall', 'sand'])
+                                                  sources=['wall'])
             ]),
         ]
         return equations
