@@ -86,7 +86,7 @@ class MakeForcesZero(Equation):
 
     """
     def __init__(self, dest, sources):
-        super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
+        super(MakeForcesZero, self).__init__(dest, sources)
 
     def loop(self, d_idx, d_fx, d_fy, d_fz):
         d_fx[d_idx] = 0
