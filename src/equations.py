@@ -68,7 +68,7 @@ class LinearSpringForceParticleParticle(Equation):
     """
     def __init__(self, dest, sources, k=1e4, ln_e=1.0, m_eff=0.5):
         super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
-        self.k = 1e5
+        self.k = k
 
         ln_e2 = ln_e * ln_e
         _tmp = np.sqrt(ln_e2 + np.pi * np.pi)
