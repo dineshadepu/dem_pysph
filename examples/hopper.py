@@ -15,9 +15,8 @@ from pysph.sph.integrator import EPECIntegrator
 from pysph.sph.integrator_step import DEMStep
 
 from pysph.sph.equation import Group
-from pysph.sph.rigid_body import (BodyForce)
 from pysph.sph.molecular_dynamics import (LinearSpringForceParticleParticle,
-                                          MakeForcesZero)
+                                          MakeForcesZero, BodyForce)
 from pysph.solver.application import Application
 
 
@@ -55,8 +54,8 @@ class FluidStructureInteration(Application):
         self.dx = 1
 
     def create_particles(self):
-        x = np.linspace(-0.5, 0.5, 100)
-        y = np.linspace(1.1, 2.1, 100)
+        x = np.linspace(-0.5, 0.5, 10)
+        y = np.linspace(0.77, 1.77, 10)
         r = (x[1] - x[0]) / 2.
         x, y = np.meshgrid(x, y)
         x, y = x.ravel(), y.ravel()
@@ -64,17 +63,21 @@ class FluidStructureInteration(Application):
         _m = np.pi * 2*r * 2*r
         m = np.ones_like(x) * _m
         m_inverse = np.ones_like(x) * 1. / _m
+        _I = 2. / 5. * _m * r**2
+        I_inverse = np.ones_like(x) * 1. / _I
         h = np.ones_like(x) * r
         sand = get_particle_array_dem(x=x, y=y, m=m, m_inverse=m_inverse, R=R,
-                                      h=h, name="sand")
+                                      h=h, I_inverse=I_inverse, name="sand")
 
         x, y = create_hopper(r)
         m = np.ones_like(x) * _m
         m_inverse = np.ones_like(x) * 1. / _m
         R = np.ones_like(x) * r
         h = np.ones_like(x) * r
+        _I = 2. / 5. * _m * r**2
+        I_inverse = np.ones_like(x) * 1. / _I
         wall = get_particle_array_dem(x=x, y=y, m=m, m_inverse=m_inverse, R=R,
-                                      h=h, name="wall")
+                                      h=h, I_inverse=I_inverse, name="wall")
         return [sand, wall]
 
     def create_solver(self):
@@ -96,7 +99,7 @@ class FluidStructureInteration(Application):
                 BodyForce(dest='sand', sources=None, gy=-9.81),
                 LinearSpringForceParticleParticle(
                     dest='sand', sources=['sand', 'wall'], k=1e4,
-                    ln_e=abs(np.log(0.8)), m_eff=0.5, mu=0.5),
+                    ln_e=abs(np.log(0.8)), m_eff=0.5, mu=.5),
                 # MakeForcesZero(dest='sand', sources=None)
             ]),
         ]
