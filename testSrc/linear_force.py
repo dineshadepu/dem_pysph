@@ -71,7 +71,7 @@ class FluidStructureInteration(Application):
                 # BodyForce(dest='sand', sources=None, gy=-9.81),
                 LinearSpringForceParticleParticle(
                     dest='sand', sources=['sand'], k=1e4,
-                    ln_e=abs(np.log(0.8)), m_eff=0.5),
+                    ln_e=abs(np.log(0.8)), m_eff=0.5, mu=0.5),
                 MakeForcesZero(dest='sand', sources=None)
             ]),
         ]
