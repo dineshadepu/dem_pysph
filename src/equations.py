@@ -60,10 +60,14 @@ class BodyForce(Equation):
         self.gz = gz
         super(BodyForce, self).__init__(dest, sources)
 
-    def initialize(self, d_idx, d_m, d_fx, d_fy, d_fz):
+    def initialize(self, d_idx, d_m, d_fx, d_fy, d_fz, d_torX, d_torY, d_torZ):
         d_fx[d_idx] = d_m[d_idx] * self.gx
         d_fy[d_idx] = d_m[d_idx] * self.gy
         d_fz[d_idx] = d_m[d_idx] * self.gz
+
+        d_torX[d_idx] = 0
+        d_torY[d_idx] = 0
+        d_torZ[d_idx] = 0
 
 
 class LinearSpringForceParticleParticle(Equation):
@@ -174,7 +178,7 @@ class LinearSpringForceParticleParticle(Equation):
 
             # torque calculation
             tor_x = (ny * ft_z - nz * ft_y) * d_R[d_idx]
-            tor_y = (-nz * ft_z + nz * ft_z) * d_R[d_idx]
+            tor_y = (-nx * ft_z + nz * ft_x) * d_R[d_idx]
             tor_z = (nx * ft_y - ny * ft_x) * d_R[d_idx]
 
             # add to global torque
@@ -203,3 +207,7 @@ class MakeForcesZero(Equation):
         d_fx[d_idx] = 0
         d_fy[d_idx] = 0
         d_fz[d_idx] = 0
+
+        d_torX[d_idx] = 0
+        d_torY[d_idx] = 0
+        d_torZ[d_idx] = 0
