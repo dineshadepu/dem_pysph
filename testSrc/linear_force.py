@@ -1,6 +1,6 @@
-"""100 spheres falling under gravity
+"""2 spheres colliding without gravity
 
-Check basic equations working. Body force and integrator
+Check basic equations working. linear force law check
 """
 from __future__ import print_function
 import numpy as np
