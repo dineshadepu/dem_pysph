@@ -115,8 +115,8 @@ class LinearSpringForceParticleParticle(Equation):
 
             # add angular relative velocity to linear relative velocity
             VIJ[0] += w_ij_x
-            VIJ[1] += w_ij_z
-            VIJ[2] += w_ij_y
+            VIJ[1] += w_ij_y
+            VIJ[2] += w_ij_z
 
             # normal force magnitude
             v_n = (VIJ[0] * nx + VIJ[1] * ny + VIJ[2] * nz)
