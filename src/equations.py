@@ -29,7 +29,8 @@ def get_particle_array_dem(constants=None, **props):
     dem_props = [
         'x0', 'y0', 'z0', 'u0', 'v0', 'w0', 'tang_x', 'tang_y', 'tang_z',
         'tang_x0', 'tang_y0', 'tang_z0', 'vt_x', 'vt_y', 'vt_z', 'wx', 'wy',
-        'wz', 'wx0', 'wy0', 'wz0', 'fx', 'fy', 'fz', 'R', 'm_inverse'
+        'wz', 'wx0', 'wy0', 'wz0', 'fx', 'fy', 'fz', 'torX', 'torY', 'torZ',
+        'R', 'm_inverse'
     ]
 
     pa = get_particle_array(constants=constants, additional_props=dem_props,
@@ -42,7 +43,7 @@ def get_particle_array_dem(constants=None, **props):
     # ])
     pa.set_output_arrays([
         'x', 'y', 'z', 'u', 'v', 'w', 'wx', 'wy', 'wz', 'm', 'p', 'pid', 'tag',
-        'gid', 'fx', 'fy', 'fz'
+        'gid', 'fx', 'fy', 'fz', 'torX', 'torY', 'torZ'
     ])
     # pa.set_output_arrays([
     #     'x', 'y', 'z', 'u', 'v', 'w', 'm', 'pid', 'gid',
@@ -83,9 +84,9 @@ class LinearSpringForceParticleParticle(Equation):
 
         self.mu = mu
 
-    def loop(self, d_idx, d_m, d_wx, d_wy, d_wz, d_fx, d_fy, d_fz, d_tang_x,
-             d_tang_y, d_tang_z, d_vt_x, d_vt_y, d_vt_z, VIJ, XIJ, RIJ, d_R,
-             s_idx, s_R, s_wx, s_wy, s_wz):
+    def loop(self, d_idx, d_m, d_wx, d_wy, d_wz, d_fx, d_fy, d_fz, d_torX,
+             d_torY, d_torZ, d_tang_x, d_tang_y, d_tang_z, d_vt_x, d_vt_y,
+             d_vt_z, VIJ, XIJ, RIJ, d_R, s_idx, s_R, s_wx, s_wy, s_wz):
         overlap = 0
 
         if RIJ > 0:
@@ -170,6 +171,16 @@ class LinearSpringForceParticleParticle(Equation):
             d_fx[d_idx] += fn_x + ft_x
             d_fy[d_idx] += fn_y + ft_y
             d_fx[d_idx] += fn_z + ft_z
+
+            # torque calculation
+            tor_x = (ny * ft_z - nz * ft_y) * d_R[d_idx]
+            tor_y = (-nz * ft_z + nz * ft_z) * d_R[d_idx]
+            tor_z = (nx * ft_y - ny * ft_x) * d_R[d_idx]
+
+            # add to global torque
+            d_torX[d_idx] += tor_x
+            d_torY[d_idx] += tor_y
+            d_torZ[d_idx] += tor_z
 
             # post calculation works
             # assign tangential velocity to the particle
