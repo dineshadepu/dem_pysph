@@ -78,9 +78,12 @@ class LinearSpringForceParticleParticle(Equation):
         _tmp = np.sqrt(ln_e2 + np.pi * np.pi)
         self.eta = 2 * np.sqrt(m_eff * self.k) * ln_e / _tmp
 
+        self.kt = 2. / 7. * k
+        self.etaT = 0.5 * self.eta
+
     def loop(self, d_idx, d_m, d_wx, d_wy, d_wz, d_fx, d_fy, d_fz, d_tang_x,
-             d_tang_y, d_tang_z, VIJ, XIJ, RIJ, d_R, s_idx, s_R, s_wx, s_wy,
-             s_wz):
+             d_tang_y, d_tang_z, d_vt_x, d_vt_y, d_vt_z, VIJ, XIJ, RIJ, d_R,
+             s_idx, s_R, s_wx, s_wy, s_wz):
         overlap = 0
 
         if RIJ > 0:
@@ -128,7 +131,6 @@ class LinearSpringForceParticleParticle(Equation):
                 ty = vt_y / vt_magn
                 tz = vt_z / vt_magn
 
-            d_tang_x[d_idx] += vt_x * dt
             # conservative force
             # d_fx[d_idx] += 1e2 * overlap * nx
             # d_fy[d_idx] += 1e2 * overlap * ny
@@ -140,12 +142,39 @@ class LinearSpringForceParticleParticle(Equation):
             # d_fy[d_idx] += -2 * v_n * ny
             # d_fz[d_idx] += -2 * v_n * nz
             # conservative damping force at one in single equation
-            # normal force addition to global force
+            # normal force calculation
             k_multi_overlap = self.k * overlap
             eta_multi_normal_velocity = self.eta * v_n
-            d_fx[d_idx] += (-k_multi_overlap - eta_multi_normal_velocity) * nx
-            d_fy[d_idx] += (-k_multi_overlap - eta_multi_normal_velocity) * ny
-            d_fz[d_idx] += (-k_multi_overlap - eta_multi_normal_velocity) * nz
+            fn_x = (-k_multi_overlap - eta_multi_normal_velocity) * nx
+            fn_y = (-k_multi_overlap - eta_multi_normal_velocity) * ny
+            fn_z = (-k_multi_overlap - eta_multi_normal_velocity) * nz
+            fn_magn = pow(fn_x * fn_x + fn_y * fn_y + fn_z * fn_z, 1. / 2.)
+
+            # tangential force addition
+            ft_x = -(self.kt * d_tang_x[d_idx]) - self.etaT * vt_x
+            ft_y = -(self.kt * d_tang_y[d_idx]) - self.etaT * vt_y
+            ft_z = -(self.kt * d_tang_z[d_idx]) - self.etaT * vt_z
+            ft_magn = pow(ft_x * ft_x + ft_y * ft_y + ft_z * ft_z, 1. / 2.)
+
+            # check for Coulomb criterion
+            f_colo = self.mu * fn_magn
+
+            if ft_magn > self.mu * fn_magn:
+                ft_x = -f_colo * tx
+                ft_y = -f_colo * ty
+                ft_z = -f_colo * tz
+
+            # add normal and tangential force to global force
+            d_fx[d_idx] += fn_x + ft_x
+            d_fy[d_idx] += fn_y + ft_y
+            d_fx[d_idx] += fn_z + ft_z
+
+            # post calculation works
+            # assign tangential velocity to the particle
+            d_vt_x[d_idx] = vt_x
+            d_vt_y[d_idx] = vt_y
+            d_vt_z[d_idx] = vt_z
+
         else:
             d_tang_x[d_idx] = 0
             d_tang_y[d_idx] = 0
