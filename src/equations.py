@@ -70,7 +70,7 @@ class LinearSpringForceParticleParticle(Equation):
 
     """
 
-    def __init__(self, dest, sources, k=1e4, ln_e=1.0, m_eff=0.5):
+    def __init__(self, dest, sources, k=1e4, ln_e=1.0, m_eff=0.5, mu=0.5):
         super(LinearSpringForceParticleParticle, self).__init__(dest, sources)
         self.k = k
 
@@ -80,6 +80,8 @@ class LinearSpringForceParticleParticle(Equation):
 
         self.kt = 2. / 7. * k
         self.etaT = 0.5 * self.eta
+
+        self.mu = mu
 
     def loop(self, d_idx, d_m, d_wx, d_wy, d_wz, d_fx, d_fy, d_fz, d_tang_x,
              d_tang_y, d_tang_z, d_vt_x, d_vt_y, d_vt_z, VIJ, XIJ, RIJ, d_R,
