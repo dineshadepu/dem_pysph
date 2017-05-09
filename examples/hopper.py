@@ -55,8 +55,8 @@ class FluidStructureInteration(Application):
         self.dx = 1
 
     def create_particles(self):
-        x = np.linspace(-0.5, 0.5, 10)
-        y = np.linspace(1.1, 2.1, 10)
+        x = np.linspace(-0.5, 0.5, 100)
+        y = np.linspace(1.1, 2.1, 100)
         r = (x[1] - x[0]) / 2.
         x, y = np.meshgrid(x, y)
         x, y = x.ravel(), y.ravel()
@@ -95,8 +95,8 @@ class FluidStructureInteration(Application):
             Group(equations=[
                 BodyForce(dest='sand', sources=None, gy=-9.81),
                 LinearSpringForceParticleParticle(
-                    dest='sand', sources=['sand', 'wall'], k=1e3,
-                    ln_e=abs(np.log(0.8)), m_eff=0.5),
+                    dest='sand', sources=['sand', 'wall'], k=1e4,
+                    ln_e=abs(np.log(0.8)), m_eff=0.5, mu=0.5),
                 # MakeForcesZero(dest='sand', sources=None)
             ]),
         ]
