@@ -18,6 +18,7 @@ sph_dem_report.pdf
 *.pdf
 *.un~
 repeat.sh
+.DS_STORE
 
 ## Intermediate documents:
 *.dvi
