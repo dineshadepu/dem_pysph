@@ -17,6 +17,7 @@ sph_dem_report.pdf
 *.hdf5
 *.pdf
 *.un~
+repeat.sh
 
 ## Intermediate documents:
 *.dvi
