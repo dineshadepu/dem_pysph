@@ -27,8 +27,9 @@ def get_particle_array_dem(constants=None, **props):
     """
 
     dem_props = [
-        'x0', 'y0', 'z0', 'u0', 'v0', 'w0', 'wx ', 'wy', 'wz', 'wx0', 'wy0',
-        'wz0', 'fx', 'fy', 'fz', 'R', 'm_inverse'
+        'x0', 'y0', 'z0', 'u0', 'v0', 'w0', 'tang_x', 'tang_y', 'tang_z',
+        'tang_x0', 'tang_y0', 'tang_z0', 'vt_x', 'vt_y', 'vt_z', 'wx', 'wy',
+        'wz', 'wx0', 'wy0', 'wz0', 'fx', 'fy', 'fz', 'R', 'm_inverse'
     ]
 
     pa = get_particle_array(constants=constants, additional_props=dem_props,
@@ -77,8 +78,9 @@ class LinearSpringForceParticleParticle(Equation):
         _tmp = np.sqrt(ln_e2 + np.pi * np.pi)
         self.eta = 2 * np.sqrt(m_eff * self.k) * ln_e / _tmp
 
-    def loop(self, d_idx, d_m, s_idx, d_fx, d_fy, d_fz, VIJ, XIJ, RIJ, d_R,
-             s_R):
+    def loop(self, d_idx, d_m, d_wx, d_wy, d_wz, d_fx, d_fy, d_fz, d_tang_x,
+             d_tang_y, d_tang_z, VIJ, XIJ, RIJ, d_R, s_idx, s_R, s_wx, s_wy,
+             s_wz):
         overlap = 0
 
         if RIJ > 0:
@@ -91,6 +93,42 @@ class LinearSpringForceParticleParticle(Equation):
             ny = -XIJ[1] * _rij
             nz = -XIJ[2] * _rij
 
+            # radius multiplied by the angular velocity
+            R_wijx = (d_R[d_idx] * d_wx[d_idx] + s_R[s_idx] * s_wx[s_idx])
+            R_wijy = (d_R[d_idx] * d_wy[d_idx] + s_R[s_idx] * s_wy[s_idx])
+            R_wijz = (d_R[d_idx] * d_wz[d_idx] + s_R[s_idx] * s_wz[s_idx])
+
+            # angular relative velocity
+            w_ij_x = R_wijy * nz - R_wijz * ny
+            w_ij_y = -R_wijx * nz + R_wijz * nx
+            w_ij_z = R_wijx * ny - R_wijy * nx
+
+            # add angular relative velocity to linear relative velocity
+            VIJ[0] += w_ij_x
+            VIJ[1] += w_ij_z
+            VIJ[2] += w_ij_y
+
+            # normal force magnitude
+            v_n = (VIJ[0] * nx + VIJ[1] * ny + VIJ[2] * nz)
+
+            # tangential velocity
+            vt_x = VIJ[0] - v_n * nx
+            vt_y = VIJ[1] - v_n * ny
+            vt_z = VIJ[2] - v_n * nz
+
+            # tangential velocity magnitude
+            vt_magn = pow(vt_x * vt_x + vt_y * vt_y + vt_z * vt_z, 1. / 2.)
+
+            # tangential unit vectors
+            tx = 0
+            ty = 0
+            tz = 0
+            if vt_magn > 0:
+                tx = vt_x / vt_magn
+                ty = vt_y / vt_magn
+                tz = vt_z / vt_magn
+
+            d_tang_x[d_idx] += vt_x * dt
             # conservative force
             # d_fx[d_idx] += 1e2 * overlap * nx
             # d_fy[d_idx] += 1e2 * overlap * ny
@@ -101,14 +139,17 @@ class LinearSpringForceParticleParticle(Equation):
             # d_fx[d_idx] += -2 * v_n * nx
             # d_fy[d_idx] += -2 * v_n * ny
             # d_fz[d_idx] += -2 * v_n * nz
-
             # conservative damping force at one in single equation
-            v_n = (VIJ[0] * nx + VIJ[1] * ny + VIJ[2] * nz)
+            # normal force addition to global force
             k_multi_overlap = self.k * overlap
             eta_multi_normal_velocity = self.eta * v_n
             d_fx[d_idx] += (-k_multi_overlap - eta_multi_normal_velocity) * nx
             d_fy[d_idx] += (-k_multi_overlap - eta_multi_normal_velocity) * ny
             d_fz[d_idx] += (-k_multi_overlap - eta_multi_normal_velocity) * nz
+        else:
+            d_tang_x[d_idx] = 0
+            d_tang_y[d_idx] = 0
+            d_tang_z[d_idx] = 0
 
 
 class MakeForcesZero(Equation):
