@@ -30,7 +30,7 @@ def get_particle_array_dem(constants=None, **props):
         'x0', 'y0', 'z0', 'u0', 'v0', 'w0', 'tang_x', 'tang_y', 'tang_z',
         'tang_x0', 'tang_y0', 'tang_z0', 'vt_x', 'vt_y', 'vt_z', 'wx', 'wy',
         'wz', 'wx0', 'wy0', 'wz0', 'fx', 'fy', 'fz', 'torX', 'torY', 'torZ',
-        'R', 'm_inverse'
+        'R', 'm_inverse', 'I_inverse'
     ]
 
     pa = get_particle_array(constants=constants, additional_props=dem_props,
@@ -43,7 +43,7 @@ def get_particle_array_dem(constants=None, **props):
     # ])
     pa.set_output_arrays([
         'x', 'y', 'z', 'u', 'v', 'w', 'wx', 'wy', 'wz', 'm', 'p', 'pid', 'tag',
-        'gid', 'fx', 'fy', 'fz', 'torX', 'torY', 'torZ'
+        'gid', 'fx', 'fy', 'fz', 'torX', 'torY', 'torZ', 'I_inverse'
     ])
     # pa.set_output_arrays([
     #     'x', 'y', 'z', 'u', 'v', 'w', 'm', 'pid', 'gid',
