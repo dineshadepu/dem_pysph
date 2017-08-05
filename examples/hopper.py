@@ -7,16 +7,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # PySPH base and carray imports
-from pysph.base.utils import get_particle_array_dem
 from pysph.base.kernels import CubicSpline
 
 from pysph.solver.solver import Solver
 from pysph.sph.integrator import EPECIntegrator
-from pysph.sph.integrator_step import DEMStep
+from pysph.sph.molecular_dynamics import DEMStep
 
 from pysph.sph.equation import Group
 from pysph.sph.molecular_dynamics import (LinearSpringForceParticleParticle,
-                                          MakeForcesZero, BodyForce)
+                                          MakeForcesZero, BodyForce,
+                                          get_particle_array_dem)
 from pysph.solver.application import Application
 
 
@@ -60,7 +60,7 @@ class FluidStructureInteration(Application):
         x, y = np.meshgrid(x, y)
         x, y = x.ravel(), y.ravel()
         R = np.ones_like(x) * r
-        _m = np.pi * 2*r * 2*r
+        _m = np.pi * 2 * r * 2 * r
         m = np.ones_like(x) * _m
         m_inverse = np.ones_like(x) * 1. / _m
         _I = 2. / 5. * _m * r**2
@@ -97,9 +97,9 @@ class FluidStructureInteration(Application):
         equations = [
             Group(equations=[
                 BodyForce(dest='sand', sources=None, gy=-9.81),
-                LinearSpringForceParticleParticle(
-                    dest='sand', sources=['sand', 'wall'], k=1e4,
-                    ln_e=abs(np.log(0.8)), m_eff=0.5, mu=.5),
+                LinearSpringForceParticleParticle(dest='sand', sources=[
+                    'sand', 'wall'
+                ], k=1e4, ln_e=abs(np.log(0.8)), m_eff=0.5, mu=.5),
                 # MakeForcesZero(dest='sand', sources=None)
             ]),
         ]
