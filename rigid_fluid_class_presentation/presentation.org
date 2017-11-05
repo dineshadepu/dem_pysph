@@ -1,0 +1,93 @@
+#+OPTIONS: toc:nil num:nil
+#+STARTUP: showeverything
+
+
+#+TITLE: Rigid fluid coupling in SPH
+#+AUTHOR: Dinesh
+#+EMAIL: adepu.dinesh.a@gmail.com
+
+* What to simulate?
+  #+CAPTION: Rigid bodies interacting with fluid and among themselves (Akinci)
+  #+attr_html: :width 500px
+  [[./intro_ship.png]]
+
+* What we know?
+  - Simulating fluid with boundaries
+** How?
+   - represent fluid with particles having mass, density, ..etc
+
+  #+CAPTION: Particle representation
+  #+attr_html: :width 500px
+  [[./particle_repr.png]]
+
+** Find forces using NS-equations
+   - Using SPH approximation
+   #+CAPTION: Particle representation
+   #+attr_html: :width 500px
+   [[./particle_repr.png]]
+
+** Move system forward
+
+* What to know?
+  - Rigid body dynamics
+** Represent rigid body
+   - represent rigid body with particles having mass, density, ..etc
+  #+CAPTION: Rigid body particle representation
+  #+attr_html: :width 500px
+  [[./rigid_particle_repr.png]]
+
+** Find forces on each particle
+
+   What forces
+
+*** Rigid body interaction
+
+    - figure of two bodies interacting
+
+*** Fluid rigid body interaction
+
+    - figure of fluid and rigid body interacting
+
+*** air rigid body interaction
+
+    - figure of air rigid body interacting
+
+
+** Force due to rigid particle
+
+     ${F_{ij} = k \delta * n_{ij}}$
+
+     #+CAPTION: Two particles under motion
+     #+attr_html: :width 500px
+     [[./dem_interaction.png]]
+
+*** Two rigid bodies colliding
+    - remember, rigid body is particles
+
+     #+CAPTION: Two rigid bodies colliding
+     #+attr_html: :width 500px
+     [[./rigid_colliding.png]]
+
+** Force due to Fluid particle
+   ${F_{j \to i}^{p} = -m_{f_i} \psi_{b_j}(\rho_{0i}) \frac{p_{fi}}{\rho_{fi}^2} \nabla W_{ij}}$
+
+
+   $\psi_{b_j} = V_{bi} \, \, \rho_{0i}$
+   #+CAPTION: Rigid body interaction with fluid
+   #+attr_html: :width 500px
+   [[./rigid_fluid_interaction.png]]
+
+
+
+** Sum all forces
+   * Find torque.
+   * Shift forces to centre of mass
+
+   ${F_{rigid} = \sum_{i} F_{b_i}}$
+
+   ${\tau_{rigid} = \sum_{i}(x_i - x^{cm}) \times F_{b_i}}$
+
+
+* Implementation
+
+* Results
