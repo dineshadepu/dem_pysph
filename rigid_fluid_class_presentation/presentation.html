@@ -27,12 +27,12 @@
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide"><h1 class="title">Rigid fluid coupling in SPH</h1><h2 class="author">Dinesh</h2><p class="date">Created: 2017-11-05 Sun 22:26</p>
+<section id="sec-title-slide"><h1 class="title">Rigid fluid coupling in SPH</h1><h2 class="author">Dinesh</h2><p class="date">Created: 2017-11-06 Mon 16:09</p>
 </section>
 
 <section>
-<section id="slide-org8622f10">
-<h2 id="org8622f10">What to simulate?</h2>
+<section id="slide-orgcb5ff0d">
+<h2 id="orgcb5ff0d">What to simulate?</h2>
 
 <div class="figure">
 <p><img src="./intro_ship.png" alt="intro_ship.png" width="500px" />
@@ -43,15 +43,15 @@
 </section>
 </section>
 <section>
-<section id="slide-org92acdf4">
-<h2 id="org92acdf4">What we know?</h2>
+<section id="slide-org962382f">
+<h2 id="org962382f">What we know?</h2>
 <ul>
 <li>Simulating fluid with boundaries</li>
 
 </ul>
 </section>
-<section id="slide-org4cf7e12">
-<h3 id="org4cf7e12">How?</h3>
+<section id="slide-org7275e16">
+<h3 id="org7275e16">How?</h3>
 <ul>
 <li>represent fluid with particles having mass, density, ..etc</li>
 
@@ -65,8 +65,8 @@
 </div>
 
 </section>
-<section id="slide-org0c5f7b2">
-<h3 id="org0c5f7b2">Find forces using NS-equations</h3>
+<section id="slide-orgbe1d9ec">
+<h3 id="orgbe1d9ec">Find forces using NS-equations</h3>
 <ul>
 <li>Using SPH approximation</li>
 
@@ -79,21 +79,21 @@
 </div>
 
 </section>
-<section id="slide-org9ae327f">
-<h3 id="org9ae327f">Move system forward</h3>
+<section id="slide-org6e2c423">
+<h3 id="org6e2c423">Move system forward</h3>
 
 </section>
 </section>
 <section>
-<section id="slide-orgb2c9d67">
-<h2 id="orgb2c9d67">What to know?</h2>
+<section id="slide-orgc6dc196">
+<h2 id="orgc6dc196">What to know?</h2>
 <ul>
 <li>Rigid body dynamics</li>
 
 </ul>
 </section>
-<section id="slide-org9c1ec8c">
-<h3 id="org9c1ec8c">Represent rigid body</h3>
+<section id="slide-orgef17ec7">
+<h3 id="orgef17ec7">Represent rigid body</h3>
 <ul>
 <li>represent rigid body with particles having mass, density, ..etc</li>
 
@@ -106,42 +106,44 @@
 </div>
 
 </section>
-<section id="slide-org5892ee5">
-<h3 id="org5892ee5">Find forces on each particle</h3>
+<section id="slide-org7040bbc">
+<h3 id="org7040bbc">Find forces on each particle</h3>
 <p>
 What forces
 </p>
 
 </section>
-<section id="slide-org1c1b6ff">
-<h4 id="org1c1b6ff">Rigid body interaction</h4>
-<ul>
-<li>figure of two bodies interacting</li>
-
-</ul>
-
-</section>
-<section id="slide-org8022f43">
-<h4 id="org8022f43">Fluid rigid body interaction</h4>
-<ul>
-<li>figure of fluid and rigid body interacting</li>
-
-</ul>
-
-</section>
-<section id="slide-org388b94f">
-<h4 id="org388b94f">air rigid body interaction</h4>
-<ul>
-<li>figure of air rigid body interacting</li>
-
-</ul>
-
-
-</section>
-<section id="slide-org6e7a4c2">
-<h3 id="org6e7a4c2">Force due to rigid particle</h3>
+<section id="slide-org6b17a71">
+<h4 id="org6b17a71">Rigid body interaction</h4>
 <p>
-\({F_{ij} = k \delta * n_{ij}}\)
+<a href="bouncing_cubes.gif">rigid bodies interacting</a>
+</p>
+
+</section>
+<section id="slide-org3d5d31a">
+<h4 id="org3d5d31a">Fluid rigid body interaction</h4>
+<p>
+<a href="rigid_fluid_interact.gif">Rigid bodies and fluid interacting</a>
+</p>
+
+</section>
+<section id="slide-org48ab7fc">
+<h4 id="org48ab7fc">air rigid body interaction</h4>
+<p>
+Many other
+</p>
+<ul>
+<li>Wind</li>
+<li>Friction</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org927d40b">
+<h3 id="org927d40b">Force due to rigid particle</h3>
+<p>
+\({F_{ij} = k \, \delta \, n_{ij}}\)
 </p>
 
 
@@ -152,11 +154,11 @@ What forces
 </div>
 
 </section>
-<section id="slide-orga7e83c0">
-<h4 id="orga7e83c0">Two rigid bodies colliding</h4>
+<section id="slide-org0f76b42">
+<h4 id="org0f76b42">Two rigid bodies colliding</h4>
 <ul>
 <li><p>
-remember, rigid body is particles
+remember, rigid body is made of particles
 </p>
 
 
@@ -169,8 +171,8 @@ remember, rigid body is particles
 </ul>
 
 </section>
-<section id="slide-orgd8ba919">
-<h3 id="orgd8ba919">Force due to Fluid particle</h3>
+<section id="slide-orgc35d604">
+<h3 id="orgc35d604">Force due to Fluid particle</h3>
 <p>
 \({F_{j \to i}^{p} = -m_{f_i} \psi_{b_j}(\rho_{0i}) \frac{p_{fi}}{\rho_{fi}^2} \nabla W_{ij}}\)
 </p>
@@ -179,6 +181,10 @@ remember, rigid body is particles
 <p>
 \(\psi_{b_j} = V_{bi} \, \, \rho_{0i}\)
 </p>
+<ul>
+<li>In detail about pressure</li>
+
+</ul>
 
 <div class="figure">
 <p><img src="./rigid_fluid_interaction.png" alt="rigid_fluid_interaction.png" width="500px" />
@@ -188,9 +194,10 @@ remember, rigid body is particles
 
 
 
+
 </section>
-<section id="slide-org5fa6004">
-<h3 id="org5fa6004">Sum all forces</h3>
+<section id="slide-orgd939819">
+<h3 id="orgd939819">Sum all forces</h3>
 <ul>
 <li>Find torque.</li>
 <li>Shift forces to centre of mass</li>
@@ -203,6 +210,75 @@ remember, rigid body is particles
 
 <p>
 \({\tau_{rigid} = \sum_{i}(x_i - x^{cm}) \times F_{b_i}}\)
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgcc3d5c6">
+<h2 id="orgcc3d5c6">Implementation</h2>
+<div class="org-src-container">
+
+<pre  class="src src-python"><span style="color: #75715E;"># </span><span style="color: #75715E;">// imports</span>
+<span style="color: #F92672;">class</span> <span style="color: #66D9EF;">RigidFluidCoupling</span><span style="color: #AE81FF;">()</span>:
+    <span style="color: #F92672;">def</span> <span style="color: #A6E22E;">create_partices</span><span style="color: #AE81FF;">(</span><span style="color: #F92672;">self</span><span style="color: #AE81FF;">)</span>:
+        <span style="color: #75715E;">#  </span><span style="color: #75715E;">// ignored</span>
+        <span style="color: #F92672;">return</span> <span style="color: #AE81FF;">[</span>fluid, tank, cube<span style="color: #AE81FF;">]</span>
+    <span style="color: #F92672;">def</span> <span style="color: #A6E22E;">create_equations</span><span style="color: #AE81FF;">(</span><span style="color: #F92672;">self</span><span style="color: #AE81FF;">)</span>:
+        <span style="color: #75715E;">#  </span><span style="color: #75715E;">// apply all equations of fluid</span>
+
+        <span style="color: #75715E;"># </span><span style="color: #75715E;">apply fluid force on rigid, equal and opposite!</span>
+        Group<span style="color: #AE81FF;">(</span>equations=<span style="color: #66D9EF;">[</span>
+        AkinciRigidFluidCoupling<span style="color: #A6E22E;">(</span>dest=<span style="color: #E6DB74;">'fluid'</span>,
+                                 sources=<span style="color: #E6DB74;">[</span><span style="color: #E6DB74;">'cube'</span>, <span style="color: #E6DB74;">'tank'</span><span style="color: #E6DB74;">]</span><span style="color: #A6E22E;">)</span>,
+        <span style="color: #66D9EF;">]</span><span style="color: #AE81FF;">)</span>,
+        Group<span style="color: #AE81FF;">(</span>equations=<span style="color: #66D9EF;">[</span>
+            RigidBodyCollision<span style="color: #A6E22E;">(</span>dest=<span style="color: #E6DB74;">'cube'</span>, sources=<span style="color: #E6DB74;">[</span><span style="color: #E6DB74;">'tank'</span><span style="color: #E6DB74;">]</span>,
+                                kn=1e5<span style="color: #A6E22E;">)</span>
+        <span style="color: #66D9EF;">]</span><span style="color: #AE81FF;">)</span>,
+        Group<span style="color: #AE81FF;">(</span>equations=<span style="color: #66D9EF;">[</span>RigidBodyMoments<span style="color: #A6E22E;">(</span>dest=<span style="color: #E6DB74;">'cube'</span>, sources=<span style="color: #AE81FF;">None</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">]</span><span style="color: #AE81FF;">)</span>,
+        Group<span style="color: #AE81FF;">(</span>equations=<span style="color: #66D9EF;">[</span>RigidBodyMotion<span style="color: #A6E22E;">(</span>dest=<span style="color: #E6DB74;">'cube'</span>, sources=<span style="color: #AE81FF;">None</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">]</span><span style="color: #AE81FF;">)</span>,
+
+    <span style="color: #F92672;">def</span> <span style="color: #A6E22E;">create_solver</span><span style="color: #AE81FF;">(</span><span style="color: #F92672;">self</span><span style="color: #AE81FF;">)</span>:
+        <span style="color: #75715E;"># </span><span style="color: #75715E;">ignored</span>
+        <span style="color: #FD971F;">integrator</span> = EPECIntegrator<span style="color: #AE81FF;">(</span>fluid=WCSPHStep<span style="color: #66D9EF;">()</span>,
+                                    cube=RK2StepRigidBody<span style="color: #66D9EF;">()</span>,
+                                    tank=WCSPHStep<span style="color: #66D9EF;">()</span><span style="color: #AE81FF;">)</span>
+        <span style="color: #75715E;"># </span><span style="color: #75715E;">ignored</span>
+</pre>
+</div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgf8638c9">
+<h2 id="orgf8638c9">Things to be noted</h2>
+<div class="outline-text-2" id="text-orgf8638c9">
+</div>
+</section>
+<section id="slide-org38e191e">
+<h3 id="org38e191e">Use summation density</h3>
+<p>
+\[\rho_{f_i} = m_{f_i} \sum_j W_{ij} + \psi_{b_k}(\rho_{0_i}) \sum_j W_{ik}\]
+</p>
+<ul>
+<li>Use this to find pressure</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgded5f32">
+<h2 id="orgded5f32">Results</h2>
+<p>
+<a href="rigid_fluid_interact.gif">Rigid bodies and fluid interacting</a>
+</p>
+
+<p>
+More on PySPH website
 </p>
 </section>
 </section>

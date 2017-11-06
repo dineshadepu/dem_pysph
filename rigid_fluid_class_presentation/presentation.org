@@ -56,14 +56,14 @@
 
 ** Force due to rigid particle
 
-     ${F_{ij} = k \delta * n_{ij}}$
+     ${F_{ij} = k \, \delta \, n_{ij}}$
 
      #+CAPTION: Two particles under motion
      #+attr_html: :width 500px
      [[./dem_interaction.png]]
 
 *** Two rigid bodies colliding
-    - remember, rigid body is particles
+    - remember, rigid body is made of particles
 
      #+CAPTION: Two rigid bodies colliding
      #+attr_html: :width 500px
