@@ -27,12 +27,12 @@
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide"><h1 class="title">Rigid fluid coupling in SPH</h1><h2 class="author">Dinesh</h2><p class="date">Created: 2017-11-06 Mon 16:09</p>
+<section id="sec-title-slide"><h1 class="title">Rigid fluid coupling in SPH</h1><h2 class="author">Dinesh</h2><p class="date">Created: 2017-11-06 Mon 16:12</p>
 </section>
 
 <section>
-<section id="slide-orgcb5ff0d">
-<h2 id="orgcb5ff0d">What to simulate?</h2>
+<section id="slide-org84ec966">
+<h2 id="org84ec966">What to simulate?</h2>
 
 <div class="figure">
 <p><img src="./intro_ship.png" alt="intro_ship.png" width="500px" />
@@ -43,15 +43,15 @@
 </section>
 </section>
 <section>
-<section id="slide-org962382f">
-<h2 id="org962382f">What we know?</h2>
+<section id="slide-org3a1d839">
+<h2 id="org3a1d839">What we know?</h2>
 <ul>
 <li>Simulating fluid with boundaries</li>
 
 </ul>
 </section>
-<section id="slide-org7275e16">
-<h3 id="org7275e16">How?</h3>
+<section id="slide-orgddf2a0f">
+<h3 id="orgddf2a0f">How?</h3>
 <ul>
 <li>represent fluid with particles having mass, density, ..etc</li>
 
@@ -65,8 +65,8 @@
 </div>
 
 </section>
-<section id="slide-orgbe1d9ec">
-<h3 id="orgbe1d9ec">Find forces using NS-equations</h3>
+<section id="slide-orga3c5926">
+<h3 id="orga3c5926">Find forces using NS-equations</h3>
 <ul>
 <li>Using SPH approximation</li>
 
@@ -79,21 +79,21 @@
 </div>
 
 </section>
-<section id="slide-org6e2c423">
-<h3 id="org6e2c423">Move system forward</h3>
+<section id="slide-org78935bf">
+<h3 id="org78935bf">Move system forward</h3>
 
 </section>
 </section>
 <section>
-<section id="slide-orgc6dc196">
-<h2 id="orgc6dc196">What to know?</h2>
+<section id="slide-orgec3c9f4">
+<h2 id="orgec3c9f4">What to know?</h2>
 <ul>
 <li>Rigid body dynamics</li>
 
 </ul>
 </section>
-<section id="slide-orgef17ec7">
-<h3 id="orgef17ec7">Represent rigid body</h3>
+<section id="slide-org54f609e">
+<h3 id="org54f609e">Represent rigid body</h3>
 <ul>
 <li>represent rigid body with particles having mass, density, ..etc</li>
 
@@ -106,29 +106,29 @@
 </div>
 
 </section>
-<section id="slide-org7040bbc">
-<h3 id="org7040bbc">Find forces on each particle</h3>
+<section id="slide-org25044f9">
+<h3 id="org25044f9">Find forces on each particle</h3>
 <p>
 What forces
 </p>
 
 </section>
-<section id="slide-org6b17a71">
-<h4 id="org6b17a71">Rigid body interaction</h4>
+<section id="slide-orgf531afe">
+<h4 id="orgf531afe">Rigid body interaction</h4>
 <p>
 <a href="bouncing_cubes.gif">rigid bodies interacting</a>
 </p>
 
 </section>
-<section id="slide-org3d5d31a">
-<h4 id="org3d5d31a">Fluid rigid body interaction</h4>
+<section id="slide-orge9f675b">
+<h4 id="orge9f675b">Fluid rigid body interaction</h4>
 <p>
 <a href="rigid_fluid_interact.gif">Rigid bodies and fluid interacting</a>
 </p>
 
 </section>
-<section id="slide-org48ab7fc">
-<h4 id="org48ab7fc">air rigid body interaction</h4>
+<section id="slide-org79b1aef">
+<h4 id="org79b1aef">air rigid body interaction</h4>
 <p>
 Many other
 </p>
@@ -140,8 +140,8 @@ Many other
 
 
 </section>
-<section id="slide-org927d40b">
-<h3 id="org927d40b">Force due to rigid particle</h3>
+<section id="slide-org9865b2b">
+<h3 id="org9865b2b">Force due to rigid particle</h3>
 <p>
 \({F_{ij} = k \, \delta \, n_{ij}}\)
 </p>
@@ -154,8 +154,8 @@ Many other
 </div>
 
 </section>
-<section id="slide-org0f76b42">
-<h4 id="org0f76b42">Two rigid bodies colliding</h4>
+<section id="slide-org099a87d">
+<h4 id="org099a87d">Two rigid bodies colliding</h4>
 <ul>
 <li><p>
 remember, rigid body is made of particles
@@ -171,8 +171,8 @@ remember, rigid body is made of particles
 </ul>
 
 </section>
-<section id="slide-orgc35d604">
-<h3 id="orgc35d604">Force due to Fluid particle</h3>
+<section id="slide-orgf1bf327">
+<h3 id="orgf1bf327">Force due to Fluid particle</h3>
 <p>
 \({F_{j \to i}^{p} = -m_{f_i} \psi_{b_j}(\rho_{0i}) \frac{p_{fi}}{\rho_{fi}^2} \nabla W_{ij}}\)
 </p>
@@ -196,8 +196,8 @@ remember, rigid body is made of particles
 
 
 </section>
-<section id="slide-orgd939819">
-<h3 id="orgd939819">Sum all forces</h3>
+<section id="slide-org61f53fe">
+<h3 id="org61f53fe">Sum all forces</h3>
 <ul>
 <li>Find torque.</li>
 <li>Shift forces to centre of mass</li>
@@ -216,8 +216,8 @@ remember, rigid body is made of particles
 </section>
 </section>
 <section>
-<section id="slide-orgcc3d5c6">
-<h2 id="orgcc3d5c6">Implementation</h2>
+<section id="slide-org4aa0546">
+<h2 id="org4aa0546">Implementation</h2>
 <div class="org-src-container">
 
 <pre  class="src src-python"><span style="color: #75715E;"># </span><span style="color: #75715E;">// imports</span>
@@ -253,13 +253,13 @@ remember, rigid body is made of particles
 </section>
 </section>
 <section>
-<section id="slide-orgf8638c9">
-<h2 id="orgf8638c9">Things to be noted</h2>
-<div class="outline-text-2" id="text-orgf8638c9">
+<section id="slide-org3680120">
+<h2 id="org3680120">Things to be noted</h2>
+<div class="outline-text-2" id="text-org3680120">
 </div>
 </section>
-<section id="slide-org38e191e">
-<h3 id="org38e191e">Use summation density</h3>
+<section id="slide-org0a10875">
+<h3 id="org0a10875">Use summation density</h3>
 <p>
 \[\rho_{f_i} = m_{f_i} \sum_j W_{ij} + \psi_{b_k}(\rho_{0_i}) \sum_j W_{ik}\]
 </p>
@@ -271,8 +271,8 @@ remember, rigid body is made of particles
 </section>
 </section>
 <section>
-<section id="slide-orgded5f32">
-<h2 id="orgded5f32">Results</h2>
+<section id="slide-org91b05c3">
+<h2 id="org91b05c3">Results</h2>
 <p>
 <a href="rigid_fluid_interact.gif">Rigid bodies and fluid interacting</a>
 </p>
