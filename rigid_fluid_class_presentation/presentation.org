@@ -41,16 +41,17 @@
    What forces
 
 *** Rigid body interaction
-
-    - figure of two bodies interacting
+    [[file:bouncing_cubes.gif][rigid bodies interacting]]
 
 *** Fluid rigid body interaction
 
-    - figure of fluid and rigid body interacting
+    [[file:rigid_fluid_interact.gif][Rigid bodies and fluid interacting]]
 
 *** air rigid body interaction
 
-    - figure of air rigid body interacting
+    Many other
+    - Wind
+    - Friction
 
 
 ** Force due to rigid particle
@@ -73,9 +74,11 @@
 
 
    $\psi_{b_j} = V_{bi} \, \, \rho_{0i}$
+   - In detail about pressure
    #+CAPTION: Rigid body interaction with fluid
    #+attr_html: :width 500px
    [[./rigid_fluid_interaction.png]]
+
 
 
 
@@ -89,5 +92,43 @@
 
 
 * Implementation
+  #+BEGIN_SRC python
+    # // imports
+    class RigidFluidCoupling():
+        def create_partices(self):
+            #  // ignored
+            return [fluid, tank, cube]
+        def create_equations(self):
+            #  // apply all equations of fluid
+
+            # apply fluid force on rigid, equal and opposite!
+            Group(equations=[
+            AkinciRigidFluidCoupling(dest='fluid',
+                                     sources=['cube', 'tank']),
+            ]),
+            Group(equations=[
+                RigidBodyCollision(dest='cube', sources=['tank'],
+                                    kn=1e5)
+            ]),
+            Group(equations=[RigidBodyMoments(dest='cube', sources=None)]),
+            Group(equations=[RigidBodyMotion(dest='cube', sources=None)]),
+
+        def create_solver(self):
+            # ignored
+            integrator = EPECIntegrator(fluid=WCSPHStep(),
+                                        cube=RK2StepRigidBody(),
+                                        tank=WCSPHStep())
+            # ignored
+  #+END_SRC
+
+
+* Things to be noted
+
+** Use summation density
+   $$\rho_{f_i} = m_{f_i} \sum_j W_{ij} + \psi_{b_k}(\rho_{0_i}) \sum_j W_{ik}$$
+   - Use this to find pressure
 
 * Results
+    [[file:rigid_fluid_interact.gif][Rigid bodies and fluid interacting]]
+
+    More on PySPH website
