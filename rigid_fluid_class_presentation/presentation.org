@@ -59,7 +59,7 @@
      ${F_{ij} = k \, \delta \, n_{ij}}$
 
      #+CAPTION: Two particles under motion
-     #+attr_html: :width 500px
+     #+attr_html: :width 800px
      [[./dem_interaction.png]]
 
 *** Two rigid bodies colliding
@@ -127,6 +127,8 @@
 ** Use summation density
    $$\rho_{f_i} = m_{f_i} \sum_j W_{ij} + \psi_{b_k}(\rho_{0_i}) \sum_j W_{ik}$$
    - Use this to find pressure
+   Boundaries is a problem.
+   - Use Hg correction.
 
 * Results
     [[file:rigid_fluid_interact.gif][Rigid bodies and fluid interacting]]
